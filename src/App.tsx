@@ -3504,7 +3504,7 @@ export default function App() {
   const [jsonImportText, setJsonImportText] = useState<string>("");
   const [exportStatusMsg, setExportStatusMsg] = useState<string | null>(null);
   const [capturedImageUrl, setCapturedImageUrl] = useState<string | null>(null);
-  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState<boolean>(false);
+  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState<boolean>(true);
   const [rightPanelCollapsed, setRightPanelCollapsed] =
     useState<boolean>(false);
   const [threeLoaded, setThreeLoaded] = useState<boolean>(false);
@@ -6927,15 +6927,13 @@ export default function App() {
       ==================================================================== */}
       <header className="relative z-20 flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-sky-500 p-0.5 shadow-lg shadow-amber-500/20">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <Orbit className="w-5 h-5 text-amber-400" />
-            </div>
+          <div className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 bg-slate-900">
+            <Orbit className="h-4 w-4 text-sky-300" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-sm sm:text-base font-bold tracking-tight bg-gradient-to-r from-white via-sky-200 to-amber-200 bg-clip-text text-transparent">
-                Helios 3D: Solar System & Alignment Observatory
+              <h1 className="text-sm sm:text-base font-semibold text-slate-100">
+                Helios
               </h1>
               <span className="hidden xl:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-sky-500/15 text-sky-300 border border-sky-500/30">
                 {accuracyMode === "high_accuracy"
@@ -6945,9 +6943,8 @@ export default function App() {
                     : "Visual Mode"}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 hidden sm:block">
-              Synchronized Solar rotation, 8 planets, dwarf planets, comets,
-              satellites & 3D alignment vectors
+            <p className="text-[11px] text-slate-500 hidden sm:block">
+              Solar system simulator
             </p>
           </div>
         </div>
@@ -7222,7 +7219,7 @@ export default function App() {
                 type="button"
                 onClick={() => setShowTestsModal(true)}
                 className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-emerald-400 hover:text-emerald-300 transition"
-                title="Automated Physics Verification Suite (8/8 Tests)"
+                title={`Automated Physics Verification Suite (${verificationSuite.filter((test) => test.passed).length}/${verificationSuite.length} Tests)`}
               >
                 <ShieldCheck className="w-4 h-4" />
               </button>
@@ -7717,15 +7714,15 @@ export default function App() {
         ================================================================== */}
         <aside
           className={`absolute top-3 left-3 z-10 transition-all duration-200 ${
-            leftPanelCollapsed ? "w-11" : "w-72 sm:w-80"
-          } max-h-[calc(100%-8.5rem)] flex flex-col rounded-2xl bg-slate-950/85 backdrop-blur-md border border-slate-800/90 shadow-2xl overflow-hidden`}
+            leftPanelCollapsed ? "w-11" : "w-64 sm:w-72"
+          } max-h-[calc(100%-8.5rem)] flex flex-col rounded-lg bg-slate-950/95 border border-slate-800 overflow-hidden`}
         >
           <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-slate-800/80">
             {!leftPanelCollapsed && (
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4 text-sky-400" />
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
-                  Planet Selector & Visuals
+                  Objects
                 </span>
               </div>
             )}
@@ -7738,7 +7735,7 @@ export default function App() {
               }
             >
               {leftPanelCollapsed ? (
-                <ChevronRight className="w-4 h-4" />
+                <Layers className="w-4 h-4" />
               ) : (
                 <ChevronLeft className="w-4 h-4" />
               )}
@@ -8414,8 +8411,8 @@ export default function App() {
         ================================================================== */}
         <aside
           className={`absolute top-3 right-3 z-10 transition-all duration-200 ${
-            rightPanelCollapsed ? "w-11" : "w-80 sm:w-96"
-          } max-h-[calc(100%-8.5rem)] flex flex-col rounded-2xl bg-slate-950/85 backdrop-blur-md border border-slate-800/90 shadow-2xl overflow-hidden`}
+            rightPanelCollapsed ? "w-11" : "w-72 sm:w-80"
+          } max-h-[calc(100%-8.5rem)] flex flex-col rounded-lg bg-slate-950/95 border border-slate-800 overflow-hidden`}
         >
           <div className="flex items-center justify-between px-3 py-2.5 border-b border-slate-800/80">
             <button
@@ -11581,7 +11578,7 @@ export default function App() {
       )}
 
       {/* ====================================================================
-          MODAL 5: AUTOMATED PHYSICS VERIFICATION SUITE (8/8 TESTS)
+          MODAL 5: AUTOMATED PHYSICS VERIFICATION SUITE (22 TESTS)
       ==================================================================== */}
       {showTestsModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -11773,4 +11770,21 @@ export default function App() {
                   href={capturedImageUrl}
                   download={`helios-solar-system-${formatIsoDate(simTimeMs)}.png`}
                   className="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs"
- 
+                >
+                  Download PNG Image
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setCapturedImageUrl(null)}
+                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
